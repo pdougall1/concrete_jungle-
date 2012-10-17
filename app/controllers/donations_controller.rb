@@ -11,6 +11,7 @@ class DonationsController < ApplicationController
 	end
 
 	def index
+		@donation = Donation.new
 		@donations = Donation.all
     respond_to do |format|
       format.html # index.html.erb

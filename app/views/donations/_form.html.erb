@@ -1,0 +1,25 @@
+<%= form_for @donation do |f| %>
+
+	<%= f.label :year %>
+	<%= f.text_field :year %>
+</br>
+	<%= f.label :month %>
+	<%= f.text_field :month %>
+</br>
+	<%= f.label :day %>
+	<%= f.text_field :day %>
+</br>
+	<%= f.label :amount %>
+	<%= f.text_field :amount %>
+</br>
+	<%= f.label :destination %>
+	<%= f.text_field :destination %>
+</br>
+	<%= f.label :food_type %>
+	<%= f.text_field :food_type %>
+</br>
+	<%= f.label :food_source %>
+	<%= f.text_field :food_source %>
+</br>
+	<%= f.submit "Submit", class: "btn btn-large btn-primary" %>						
+<% end %>

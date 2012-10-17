@@ -1,1 +1,215 @@
 @import "bootstrap";
+
+body {
+  padding-top: 60px;
+}
+
+
+.square {
+	margin: 20px;
+	background-color: red;
+	width: 100px;
+}
+
+.d3{
+	margin: 30px;
+	background-color: black;
+}
+
+ .chart rect {
+  stroke: white;
+  fill: steelblue;
+}
+
+div#chart-box{
+	font: 10px sans-serif;
+	background-color: #DEDEDE;
+	text-align: right;
+	padding: 3px;
+	margin: 50px;
+	color: white;
+	width: 500px;
+	height: 300px;
+}
+
+.form-nums {
+	background-color: #DEDEDE;
+	padding: 50px;
+	margin: 50px;
+	color: white;
+}
+
+
+circle.node {
+  cursor: pointer;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+line.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
+
+.chart rect {
+  stroke: white;
+  fill: steelblue;
+}
+
+#fuck-you {
+	text-align: center;
+	font-size: 100;
+	font-color: red;
+}
+
+.center {
+  text-align: center;
+}
+
+p {
+  background: #333;
+  margin-bottom: 10px;
+  padding: 7px;
+  color: #fff;
+  font-family: Arial;
+  font-size: 12px; 
+}
+
+#form-picking {
+  margin: 20px;
+}
+
+#food_list {
+  text-align: right;
+}
+
+#circle-chart {
+  margin-bottom: 50px;
+}
+
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+
+
+
+
+#Apples {
+  color: #1f77b4;
+}
+
+#Mulberries {
+  color: #aec7e8;
+}
+
+#Pears {
+  color: #ff7f0e;
+}
+
+#Oyster_Mushrooms {
+  color: #ffbb78;
+}  
+
+#Turnips  {
+  color: #2ca02c;
+}
+
+#figs {
+  color: #98df8a;
+}
+
+#plums {
+  color: #d62728;
+}
+
+#Daikon {
+  color: #ff9896;
+}
+
+#Serviceberries {
+  color: #9467bd;
+}
+
+#Kale {
+  color: #c5b0d5;
+}
+
+#Blackberries {
+  color: #8c564b;
+}
+
+#Cabbage {
+  color: #c49c94;
+}
+
+#Kohlrabi {
+  color: #e377c2;
+}
+
+#Carrots {
+  color: #f7b6d2;
+}
+
+#Zucchini {
+  color: #7f7f7f;
+}
+
+#Onions {
+  color: #c7c7c7;
+}
+
+#Daikon {
+  color: #bcbd22;
+}
+
+#Sweet_Potatoes {
+  color: #dbdb8d;
+}
+
+#Eggplant {
+  color: #17becf;
+}
+
+#Muscadines {
+  color: #9edae5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
