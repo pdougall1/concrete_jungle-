@@ -1,0 +1,49 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+
+      <div class="container-fluid nav-collapse">
+
+        <% if  full_title(yield(:title)) ==  'My Mag | User Pics' %>
+          <span class="nav pull-left">
+            <span id="form-image">
+            <%= render 'pics/form_image' %>
+            </span>
+          </span>
+
+        <% end %>
+        <ul class="nav pull-right">
+
+<!--  dropdown 1 -->
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                drop 1 <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'User Pics', "#" %></li>
+                <li><%= link_to 'Pics Index', "#" %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to "Blank", "#" %>
+                </li>
+              </ul>
+            </li>
+
+<!-- dropdown 2 -->
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                drop 2 <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Profile", "#" %></li>
+                <li><%= link_to "Settings", "#" %></li>
+                <li><%= link_to "Users", "#" %></li>
+                <li class="divider"></li>
+              </ul>
+            </li>
+
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
