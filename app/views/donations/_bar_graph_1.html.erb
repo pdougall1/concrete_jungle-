@@ -3,35 +3,31 @@
 
 <div id="circle-chart"></div>
 
-
-
-
 <script type="text/javascript">
 d3.json("donations.json", function (json) {
 
-var h = 600 // sets the height of the box
-var w = 800 // sets the width of the box in total % of the parent element
-
-// need to get year, month, day into the same relatable scale
-// for some reason this doesn't really work well
-var time_in_days = function(d) { return ((d.year * 365) + (d.month * 30) + d.day); }
+var h = 500 // sets the height of the box
+var w = 1000 // sets the width of the box in total % of the parent element
 
 var svg = d3.select("div#circle-chart").append("svg")
   .attr("class", "chart")
   .attr("width", w )
   .attr("height", h );  
 
-// set variables for the largest of each scaled attribute
+// set variables for the largest and smallest of each scaled attribute
 var largest_radius = 75
 var smallest_radius = 3
 var largest_amount = d3.max(json, function(d) { return d.amount; })
-var largest_id = d3.max(json, function(d) { return d.id; })
 var smallest_time_in_days = d3.min(json, function(d) { return ((d.year * 365) + (d.month * 30) + d.day); })
 var largest_time_in_days = d3.max(json, function(d) { return ((d.year * 365) + (d.month * 30) + d.day); })
 var approximate_number_of_months = ((largest_time_in_days - smallest_time_in_days)/ 30)
 
-//set a padding variable to show all of the circles on the sides
-var padding = largest_radius
+//set a padding variable to show all of the circles on the sides of box with the #s on axis
+var foodlistPadding = 120
+var xAxisPadding = foodlistPadding + 40 // meaning padding for y axis along the x axis
+var yAxisPadding = 40 //padding for x axis along the y axis
+var xCirclePadding = largest_radius + xAxisPadding + 5
+var yCirclePadding = (largest_radius)
   
 // scales the radius of each circle   
 var radius = d3.scale.linear()
@@ -41,20 +37,42 @@ var radius = d3.scale.linear()
 // scales the height and width of the whole graph
 var yScale = d3.scale.linear()
   .domain([0, largest_amount ])
-  .range([h - padding, padding]); // flipping [1, h] to [h, 1] inverts ths scale so large are on top
+  .range([h - yCirclePadding, yCirclePadding]); // flipping [1, h] to [h, 1] inverts ths scale so large are on top
 
 var xScale = d3.scale.linear()
   .domain([smallest_time_in_days, largest_time_in_days])
-  .range([padding, w - padding]);
-
-
+  .range([xCirclePadding, w - xCirclePadding]);
 
 // This really needs to be filled out explicitly in a way that adds new foods easily
-var circle_color = d3.scale.category20()
-  .domain(["Apples", "Mulberries", "Pears", "Oyster Mushrooms", "Turnips", "figs", "plums", "Daikon", "Serviceberries", "Kale", "Blackberries", "Cabbage", "Kohlrabi", "Carrots", "Zucchini", "Onions", "Daikon", "Sweet Potatoes", "Eggplant", "Muscadines", "West Indian Gherkin", "Zucchini"]) 
 
-// d3.select('svg').transition()
-//     .style("background-color", "gray");      
+var foodItems = [
+  ["Apples", 1],
+  ["Mulberries", 2],
+  ["Pears", 3],
+  ["Oyster Mushrooms", 4],
+  ["Turnips", 5],
+  ["figs", 6],
+  ["plums", 7],
+  ["Daikon", 8],
+  ["Serviceberries", 9],
+  ["Kale", 10],
+  ["Blackberries", 11],
+  ["Cabbage", 12],
+  ["Kohlrabi", 13],
+  ["Carrots", 14],
+  ["Zucchini", 15],
+  ["Onions", 16],
+  ["Daikon", 17],
+  ["Sweet Potatoes", 18],
+  ["Eggplant", 19],
+  ["Muscadines", 20],
+  ["West Indian Gherkin", 21],
+  ["Zucchini", 22], 
+  ["Radishes", 23]
+];
+
+var circle_color = d3.scale.category20()
+  .domain(function(foodItems) { return foodItems[o]; })       
 
   var circle = svg.selectAll('circle')
     .data(json)
@@ -65,23 +83,17 @@ var circle_color = d3.scale.category20()
       .attr("cx", function(d) { return xScale((d.year * 365) + (d.month * 30) + d.day); })
       .attr("r", function(d) { return radius(d.amount); });
 
-
 // label the circles if you want to
-  // var text = svg.selectAll('text')
-  //  .data(json)
-  //  .enter()
-  //  .append("text")
-  //  .text( function(d) { return d.food_type; })
-  //  .attr("x", function(d) { return xScale((d.year * 365) + (d.month * 30) + d.day); })
-   //  .attr("y", function(d) { return yScale(d.amount); })
-   //  .attr("font-family", "sans-serif")
-   //  .attr("font-size", "11px")
-   //  .style("fill", "black")
-
-// Padding for axises
-var xPadding = largest_radius - (smallest_radius + 10)
-var yPadding = 50
-
+  var text = svg.selectAll('text')
+   .data(foodItems)
+   .enter()
+   .append("text")
+   .text( function(d) { return d[0]; })
+    .attr("x", 5)
+    .attr("y", function(d) { return d[1] * 15 + largest_radius; })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "11px")
+    .style("fill", function(d) { return circle_color(d[0]); });
 
 // Define X axis
 var xAxis = d3.svg.axis()
@@ -91,7 +103,7 @@ var xAxis = d3.svg.axis()
 
 svg.append("g")
     .attr("class", "axis")  //Assign "axis" class
-    .attr("transform", "translate(0," + (h - xPadding) + ")") //move to bottom
+    .attr("transform", "translate(0," + (h - yAxisPadding) + ")") //move to bottom
     .call(xAxis);  
 
 // Define Y axis
@@ -101,10 +113,8 @@ var yAxis = d3.svg.axis()
 
 svg.append("g")
   .attr("class", "axis")  //Assign "axis" class
-  .attr("transform", "translate(" + yPadding + ", 0)") //move to bottom
+  .attr("transform", "translate(" + xAxisPadding + ", 0)") //move to bottom
   .call(yAxis); 
-
-
 
 });
 

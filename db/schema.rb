@@ -11,30 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016025503) do
+ActiveRecord::Schema.define(:version => 20121018192207) do
 
   create_table "donations", :force => true do |t|
-    t.integer "year"
-    t.integer "month"
-    t.integer "day"
-    t.integer "amount"
-    t.string  "destination", :limit => nil
-    t.string  "food_type",   :limit => nil
-    t.string  "food_source", :limit => nil
-  end
-
-  add_index "donations", ["id"], :name => "sqlite_autoindex_donations_1", :unique => true
-
-  create_table "nums", :force => true do |t|
-    t.integer  "num"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "users", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "name"
+    t.integer  "year"
+    t.integer  "month"
+    t.integer  "day"
+    t.integer  "amount"
+    t.string   "destination"
+    t.string   "food_type"
+    t.string   "food_source"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
 end
