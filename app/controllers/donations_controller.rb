@@ -7,7 +7,7 @@ class DonationsController < ApplicationController
 	def create
 		@donation = Donation.new(params[:donation])
 		@donation.save
-		redirect_to root_path
+		redirect_to donations_path
 	end
 
 	def index

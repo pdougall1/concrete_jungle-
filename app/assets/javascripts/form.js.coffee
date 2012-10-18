@@ -9,6 +9,8 @@ $ ->
 		$("#hide_form").hide()	
 		$("#show_form").show()	
 
-	$("#show_form").hide()
+	$("#form-picking").hide()
+	$("#hide_form").hide()	
+	$("#show_form").show()	
 	$("#show_form").click(show_form)	
 	$("#hide_form").click(hide_form)	
