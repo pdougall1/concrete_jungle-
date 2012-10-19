@@ -1,0 +1,153 @@
+
+<!-- <div id='chart-box'>bar graph 1</div> -->
+
+<div id="chart2">Chart 2</div>
+
+
+<script type="text/javascript">
+
+// put it all in the json data function
+d3.json("donations.json", function (json) {
+
+
+// Get the layout started
+var h = 500 // sets the height of the box
+    w = 1000 // sets the width of the box
+    
+var vis = d3.select("div#chart2").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+
+
+// Describe the force to layout
+var force = d3.layout.force()
+		.nodes(json)
+    .size([w, h])
+    .charge(-200)
+    .gravity(0.05)
+    // .alpha(.2)
+    .start();
+
+
+
+// scales the radius of each circle 
+var largest_radius = 75  //------------------------------------------set radius max
+    smallest_radius = 3  //------------------------------------------set radius min
+    largest_amount = d3.max(json, function(d) { return d.amount; })
+
+var radius = d3.scale.linear()
+  .domain([0, largest_amount])
+  .range([smallest_radius, largest_radius]);
+
+
+
+// Describe the color of the circles
+var foodItems = [
+  ["Apples", 1],            ["Mulberries", 2],          ["Pears", 3],
+  ["Oyster Mushrooms", 4],  ["Turnips", 5],             ["figs", 6],
+  ["plums", 7],             ["Daikon", 8],              ["Serviceberries", 9],
+  ["Kale", 10],             ["Blackberries", 11],       ["Cabbage", 12],
+  ["Kohlrabi", 13],         ["Carrots", 14],            ["Zucchini", 15],
+  ["Onions", 16],           ["Daikon", 17],             ["Sweet Potatoes", 18],
+  ["Eggplant", 19],         ["Muscadines", 20],         ["West Indian Gherkin", 21],
+  ["Zucchini", 22],         ["Radishes", 23]
+];
+
+var circle_color = d3.scale.category20()
+  .domain(function(foodItems) { return foodItems[o]; }) 
+
+
+
+// Enter the circles as nodes
+var node = vis.selectAll("circle")
+    .data(json)
+  .enter().append("svg:circle")
+    .attr("r", function(d) { return radius(d.amount); })
+    .style("fill", function(d, i) { return circle_color(d.food_type); })
+    .call(force.drag);
+    
+vis.style("opacity", 1e-6)
+  .transition()
+    .duration(1000)
+    .style("opacity", 1);
+
+
+
+// Progress the ticks
+force.on("tick", function(e) {
+
+  // Push different nodes in different directions for clustering.
+  // var k = 6 * e.alpha;
+  // nodes.forEach(function(o, i) {
+  //   o.y += i & 1 ? k : -k;
+  //   o.x += i & 2 ? k : -k;
+  // });	
+
+
+  node.attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; });
+});
+});
+
+
+
+
+
+// ---------------------------Newton's balls----------------------------------
+
+
+
+
+// var w=960,h=500;
+// svg=d3.select("body")
+//     .append("svg:svg")
+//     .attr("height",h)
+//     .attr("width",w)
+    
+
+// nodes = d3.range(20).map(function(d,i) {
+//     radius = Math.random()*40+5;
+//     x=Math.random()*(w-radius)+radius
+//     y=Math.random()*(h-radius)+radius
+//     return {radius:radius,mass:radius,x:x,y:y,px:x+Math.random()*10-5,py:y+Math}
+// })
+
+// ball = svg.selectAll(".ball").data(nodes)
+
+// ball.enter()
+//     .append("circle")
+//     .attr("class","ball")
+//     .attr("r",function(d) { return d.radius})
+    
+    
+// force = d3.layout.force()
+//     .friction(1)
+//     .nodes(nodes)
+//     .charge(0).gravity(0)
+//     .on("tick.redraw",redraw)
+//     .start()
+
+// ball.call(force.drag)   
+// d3.z.collide(force)
+// d3.z.deflect(force,0,0,w,h)
+
+
+// function redraw() {
+//     ball.attr("cx",function(d) { return d.x})
+//     ball.attr("cy",function(d) { return d.y})
+//    force.resume() 
+// }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

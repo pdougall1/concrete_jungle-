@@ -1,0 +1,126 @@
+<div id="chart3">Chart 3</div>
+
+<script type="text/javascript">
+
+// ---------------------collision detection------------------
+d3.json("donations.json", function (json) {
+
+// Get the layout started
+var h = 500 // sets the height of the box
+    w = 1000 // sets the width of the box
+
+var svg = d3.select("div#chart3").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+
+
+// scales the radius of each circle 
+var largest_radius = 75  //------------------------------------------set radius max
+    smallest_radius = 3  //------------------------------------------set radius min
+    largest_amount = d3.max(json, function(d) { return d.amount; })
+
+var radius = d3.scale.linear()
+  .domain([0, largest_amount])
+  .range([smallest_radius, largest_radius]);
+
+
+
+// Describe the color of the circles
+var foodItems = [
+  ["Apples", 1],            ["Mulberries", 2],          ["Pears", 3],
+  ["Oyster Mushrooms", 4],  ["Turnips", 5],             ["figs", 6],
+  ["plums", 7],             ["Daikon", 8],              ["Serviceberries", 9],
+  ["Kale", 10],             ["Blackberries", 11],       ["Cabbage", 12],
+  ["Kohlrabi", 13],         ["Carrots", 14],            ["Zucchini", 15],
+  ["Onions", 16],           ["Daikon", 17],             ["Sweet Potatoes", 18],
+  ["Eggplant", 19],         ["Muscadines", 20],         ["West Indian Gherkin", 21],
+  ["Zucchini", 22],         ["Radishes", 23]
+];
+
+var circle_color = d3.scale.category20()
+  .domain(function(foodItems) { return foodItems[o]; }) 
+
+
+
+
+var quantity = d3.max(json, function(d, i) { return i; })
+var nodes = d3.range(quantity)
+  .map(function() { return {radius: 10}; })
+    
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .size([w, h])
+    .gravity(0.05)
+    .charge(function(d, i) { return i ? 0 : -2000; })
+    ;
+    
+    
+
+var root = nodes[0];
+root.radius = 0;
+root.fixed = true;
+
+force.start();
+
+
+
+svg.selectAll("circle")
+    .data(nodes)
+  .enter().append("svg:circle")
+    .attr("r", function(d) { return d.radius; })
+    .style("fill", "green");
+
+force.on("tick", function(e) {
+  var q = d3.geom.quadtree(nodes),
+      i = 0,
+      n = nodes.length;
+
+  while (++i < n) {
+    q.visit(collide(nodes[i]));
+  }
+
+  svg.selectAll("circle")
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; });
+});
+
+svg.on("mousemove", function() {
+  var p1 = d3.svg.mouse(this);
+  root.px = p1[0];
+  root.py = p1[1];
+  force.resume();
+});
+
+function collide(node) {
+  var r = node.radius + 16,
+      nx1 = node.x - r,
+      nx2 = node.x + r,
+      ny1 = node.y - r,
+      ny2 = node.y + r;
+  return function(quad, x1, y1, x2, y2) {
+    if (quad.point && (quad.point !== node)) {
+      var x = node.x - quad.point.x,
+          y = node.y - quad.point.y,
+          l = Math.sqrt(x * x + y * y),
+          r = node.radius + quad.point.radius;
+      if (l < r) {
+        l = (l - r) / l * .5;
+        node.x -= x *= l;
+        node.y -= y *= l;
+        quad.point.x += x;
+        quad.point.y += y;
+      }
+    }
+    return x1 > nx2
+        || x2 < nx1
+        || y1 > ny2
+        || y2 < ny1;
+  };
+}
+
+});
+</script>
+
+

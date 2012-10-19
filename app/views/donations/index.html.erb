@@ -7,17 +7,18 @@
 			<div id="hide_form" class="btn btn-large btn-primary">hide form</div>
 		</div>
 		<div id="form-picking"><%= render 'donations/form' %></div>
-		<div id="food_list"><%#= render 'donations/food_list' %></div>
+		<div>
+			<span class='btn btn-primary forms' id='show_1'>Show 1</span>
+			<span class='btn btn-primary forms' id='show_2'>Show 2</span>
+		</div>
 	</div>
 
 	<div class="span11">
-		<div>
-<!-- 			<span class='btn btn-large btn-primary' id='show_1'>Show 1</span>
-			<span class='btn btn-large btn-primary' id='show_2'>Show 2</span> -->
-		</div>
+
 		
 		</br></br>
-		<div id="bar_graph_1"><%= render 'donations/bar_graph_1' %></div>
-		<div id="bar_graph_2"><%= render 'donations/bar_graph_2' %></div>
+		<div ><%#= render 'donations/chart1' %></div>
+		<div ><%= render 'donations/chart2' %></div>
+		<div ><%#= render 'donations/chart3' %></div>
 	</div>
 </div>
