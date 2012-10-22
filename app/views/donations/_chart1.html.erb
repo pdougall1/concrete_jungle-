@@ -45,16 +45,16 @@ var xScale = d3.scale.linear()
 
 // This really needs to be filled out explicitly in a way that adds new foods easily
 
-var foodItems = [
-  ["Apples", 1],            ["Mulberries", 2],          ["Pears", 3],
-  ["Oyster Mushrooms", 4],  ["Turnips", 5],             ["figs", 6],
-  ["plums", 7],             ["Daikon", 8],              ["Serviceberries", 9],
-  ["Kale", 10],             ["Blackberries", 11],       ["Cabbage", 12],
-  ["Kohlrabi", 13],         ["Carrots", 14],            ["Zucchini", 15],
-  ["Onions", 16],           ["Daikon", 17],             ["Sweet Potatoes", 18],
-  ["Eggplant", 19],         ["Muscadines", 20],         ["West Indian Gherkin", 21],
-  ["Zucchini", 22],         ["Radishes", 23]
-];
+  var foodItems = [
+    ["Apples", 1],            ["Mulberries", 2],          ["Pears", 3],
+    ["Oyster Mushrooms", 4],  ["Turnips", 5],             ["figs", 6],
+    ["plums", 7],             ["Daikon", 8],              ["Serviceberries", 9],
+    ["Kale", 10],             ["Blackberries", 11],       ["Cabbage", 12],
+    ["Kohlrabi", 13],         ["Carrots", 14],            ["Zucchini", 15],
+    ["Onions", 16],           ["Daikon", 17],             ["Sweet Potatoes", 18],
+    ["Eggplant", 19],         ["Muscadines", 20],         ["West Indian Gherkin", 21],
+    ["Zucchini", 22],         ["Radishes", 23]
+  ];
 
 var circle_color = d3.scale.category20()
   .domain(function(foodItems) { return foodItems[o]; })       
@@ -68,7 +68,13 @@ var circle_color = d3.scale.category20()
       .attr("cx", function(d) { return xScale((d.year * 365) + (d.month * 30) + d.day); })
       .attr("r", function(d) { return radius(d.amount); });
 
-// label the circles if you want to
+    circle.style("opacity", 1e-6)
+      .transition()
+        .duration(1000)
+        .style("opacity", 1);
+ 
+
+// make a list relating the colors to food items
   var text = svg.selectAll('text')
    .data(foodItems)
    .enter()

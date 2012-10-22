@@ -45,7 +45,7 @@ var circle_color = d3.scale.category20()
 
 
 var quantity = d3.max(json, function(d, i) { return i; })
-var nodes = d3.range(quantity)
+var nodes = d3.range(quantity)  
   .map(function() { return {radius: 10}; })
     
 
