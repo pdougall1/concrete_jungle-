@@ -29,9 +29,12 @@ d3.json("donations.json", function (json) {
       smallest_charge = 0  //------------------------------------------set radius min
       largest_amount = d3.max(json, function(d) { return d.amount; })
 
-  var charge_scale = d3.scale.linear()
+  var charge_radius_scale = d3.scale.linear()
     .domain([0, largest_amount])
     .range([smallest_charge, largest_charge]);    
+
+  var charge_food_item_scale = d3.scale.ordinal()
+      
 
 
 
@@ -67,8 +70,14 @@ d3.json("donations.json", function (json) {
   var force = d3.layout.force()
       .nodes(json)
       .gravity(0.1)
-      .charge(function(d) { return charge_scale(d.amount) * -1; })
+      .charge(function(d) { return charge_radius_scale(d.amount) * -1; })
       .size([w, h]);
+
+  var force = d3.layout.force()
+      .nodes(json)
+      .gravity(0.1)
+      .charge(function(d) { return charge_radius_scale(d.amount) * -1; })
+      .size([w, h]);      
 
   force.on("tick", function(e) {
 
