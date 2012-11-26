@@ -45,19 +45,12 @@ var xScale = d3.scale.linear()
 
 // This really needs to be filled out explicitly in a way that adds new foods easily
 
-  var foodItems = [
-    ["Apples", 1],            ["Mulberries", 2],          ["Pears", 3],
-    ["Oyster Mushrooms", 4],  ["Turnips", 5],             ["figs", 6],
-    ["plums", 7],             ["Daikon", 8],              ["Serviceberries", 9],
-    ["Kale", 10],             ["Blackberries", 11],       ["Cabbage", 12],
-    ["Kohlrabi", 13],         ["Carrots", 14],            ["Zucchini", 15],
-    ["Onions", 16],           ["Daikon", 17],             ["Sweet Potatoes", 18],
-    ["Eggplant", 19],         ["Muscadines", 20],         ["West Indian Gherkin", 21],
-    ["Zucchini", 22],         ["Radishes", 23]
-  ];
+var foodTypes = <%= list_of_food_types(@food_types).to_json.html_safe %>
+var colors = <%= colors.to_json.html_safe %>
 
-var circle_color = d3.scale.category20()
-  .domain(function(foodItems) { return foodItems[o]; })       
+var circle_color = d3.scale.ordinal()
+  .domain(foodTypes)
+  .range(colors)       
 
   var circle = svg.selectAll('circle')
     .data(json)
@@ -67,30 +60,60 @@ var circle_color = d3.scale.category20()
       .attr("cy", function(d) { return yScale(d.amount); })
       .attr("cx", function(d) { return xScale((d.year * 365) + (d.month * 30) + d.day); })
       .attr("r", function(d) { return radius(d.amount); });
+ 
 
     circle.style("opacity", 1e-6)
       .transition()
         .duration(1000)
-        .style("opacity", 1);
- 
+        .style("opacity", 0.9);   
+
+    circle.on("mouseover", function() {
+      svg.selectAll('circle').transition()
+      .style("opacity", 0.2)   
+      .delay(0)
+      .duration(500)
+      d3.select(this).transition()
+        .style("opacity", 1)   
+        .delay(250)
+        .duration(500)
+    });  
+
+    circle.on("mouseout", function() {
+      svg.selectAll('circle').transition()
+      .style("opacity", 0.9)   
+      .delay(0)
+      .duration(250)
+    });
 
 // make a list relating the colors to food items
   var text = svg.selectAll('text')
-   .data(foodItems)
+   .data(foodTypes)
    .enter()
    .append("text")
-   .text( function(d) { return d[0]; })
+   .text( function(d) { return d; })
     .attr("x", 5)
-    .attr("y", function(d) { return d[1] * 15 + largest_radius; })
+    .attr("y", function(d, i) { return i * 15 + largest_radius; })
     .attr("font-family", "sans-serif")
     .attr("font-size", "11px")
-    .style("fill", function(d) { return circle_color(d[0]); });
+    .style("fill", function(d) { return circle_color(d); });
 
 // Define X axis
+
+dates = <%= dates(@donations).to_json.html_safe %>
+function getDate(d) {
+    return new Date(d);
+}
+var minDate = getDate(dates[0])
+var maxDate = getDate(dates[dates.length-1])
+
+var scaleXAxis = d3.time.scale()
+  .domain([minDate, maxDate])
+  .range([xCirclePadding, w - xCirclePadding]);
+
 var xAxis = d3.svg.axis()
-  .scale(xScale)
+  .scale(scaleXAxis)
   .orient("bottom")
-  // .ticks(approximate_number_of_months);  //Set rough # of ticks to months  
+  .ticks(5);  
 
 svg.append("g")
     .attr("class", "axis")  //Assign "axis" class
@@ -109,4 +132,42 @@ svg.append("g")
 
 });
 
+d3.selectAll("circle").on("mouseover", function() {
+      d3.select(this).transition()
+      .attr("fill", "gray")
+      .delay(0)
+      .duration(1000)
+      .ease("elastic", 10, .3)
+    }) 
+  
+
+    .on("mouseover", function() {
+        d3.select(this).transition()
+        .attr("cy", function() { return y2(Math.random()) })
+        .delay(0)
+        .duration(2000)
+        .ease("elastic", 10, .3)
+    })  
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

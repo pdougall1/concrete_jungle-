@@ -13,6 +13,8 @@ class DonationsController < ApplicationController
 	def index
 		@donation = Donation.new
 		@donations = Donation.all
+		@food_types = []
+		Donation.all.each { |f| @food_types << f.food_type }		
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @donations }
@@ -24,6 +26,6 @@ class DonationsController < ApplicationController
 	end
 
 	def home
-		
+		@donations = Donation.all
 	end
 end
