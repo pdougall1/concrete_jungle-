@@ -6,66 +6,53 @@ d3.json("donations.json", function (json) {
 
   var w = 1000,
       h = 500,
-      fill = d3.scale.category10(),
-      foci = [{x: 150, y: 150}, {x: 350, y: 250}, {x: 700, y: 400}];
+      fill = d3.scale.category10();
 
   var vis = d3.select("div#chart2").append("svg:svg")
       .attr("width", w)
       .attr("height", h);
 
   // scales the radius of each circle 
-  var largest_radius = 75  //------------------------------------------set radius max
-      smallest_radius = 3  //------------------------------------------set radius min
+  var largest_radius = 30  
+      smallest_radius = 3
       largest_amount = d3.max(json, function(d) { return d.amount; })
 
   var radius = d3.scale.linear()
     .domain([0, largest_amount])
     .range([smallest_radius, largest_radius]);
 
-
-
   // scales the charge of each circle 
-  var largest_charge = 1000  //------------------------------------------set radius max
-      smallest_charge = 0  //------------------------------------------set radius min
+  var largest_charge = 150  
+      smallest_charge = 7 
       largest_amount = d3.max(json, function(d) { return d.amount; })
 
   var charge_radius_scale = d3.scale.linear()
     .domain([0, largest_amount])
     .range([smallest_charge, largest_charge]);    
 
-  var charge_food_item_scale = d3.scale.ordinal()
-      
+  var charge_food_item_scale = d3.scale.ordinal()      
 
 
+// getting food types from db and colors from array described in application_helper
+var foodTypes = <%= list_of_food_types(@food_types).to_json.html_safe %>
+var colors = <%= colors.to_json.html_safe %>
 
-  // Describe the color of the circles
-
-  var foodItems = [
-    ["Apples", 1],            ["Mulberries", 2],          ["Pears", 3],
-    ["Oyster Mushrooms", 4],  ["Turnips", 5],             ["figs", 6],
-    ["plums", 7],             ["Daikon", 8],              ["Serviceberries", 9],
-    ["Kale", 10],             ["Blackberries", 11],       ["Cabbage", 12],
-    ["Kohlrabi", 13],         ["Carrots", 14],            ["Zucchini", 15],
-    ["Onions", 16],           ["Daikon", 17],             ["Sweet Potatoes", 18],
-    ["Eggplant", 19],         ["Muscadines", 20],         ["West Indian Gherkin", 21],
-    ["Zucchini", 22],         ["Radishes", 23]
-  ];
-
-  var circle_color = d3.scale.category20()
-    .domain(function(foodItems) { return foodItems[o]; })     
+var circle_color = d3.scale.ordinal()
+  .domain(foodTypes)
+  .range(colors)    
 
 
 // make a list relating the colors to food items
   vis.selectAll('text')
-   .data(foodItems)
+   .data(foodTypes)
    .enter()
    .append("text")
-   .text( function(d) { return d[0]; })
+   .text( function(d) { return d; })
     .attr("x", 5)
-    .attr("y", function(d) { return d[1] * 15 + largest_radius; })
+    .attr("y", function(d, i) { return i * 15 + largest_radius; })
     .attr("font-family", "sans-serif")
     .attr("font-size", "11px")
-    .style("fill", function(d) { return circle_color(d[0]); });  
+    .style("fill", function(d) { return circle_color(d); });      
 
   var force = d3.layout.force()
       .nodes(json)
@@ -79,24 +66,22 @@ d3.json("donations.json", function (json) {
       .charge(function(d) { return charge_radius_scale(d.amount) * -1; })
       .size([w, h]);      
 
-  force.on("tick", function(e) {
-
-    // // Push nodes toward their designated focus.
-    // var k = .1 * e.alpha;
-    // json.forEach(function(o) {
-    //   o.y = (foci[o].y);
-    //   o.x = (foci[o].x);
-    // });
+function update(e) {
+    var k = 6 * e.alpha;
+    json.forEach(function(o, i) {
+      o.y += i & 1 ? k : -k;
+      o.x += i & 2 ? k : -k;
+    });
 
     vis.selectAll("circle.node")
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
-  });
+}      
+
+  force.on("tick", update);
 
 
   force.start()
-  d3.z.collide(force)
-  d3.z.deflect(force,0,0,w,h)
 
 
   vis.selectAll("circle.node")
@@ -111,9 +96,17 @@ d3.json("donations.json", function (json) {
 
   vis.style("opacity", 1e-6)
     .transition()
-      .duration(1000)
+      .duration(2000)
       .style("opacity", 1);
 
+
+  d3.select("div#chart2").on("click", function() {
+    json.forEach(function(o, i) {
+      o.x += (Math.random() - .5) * 40;
+      o.y += (Math.random() - .5) * 40;
+    });
+    force.resume();
+  });      
 
 });
 

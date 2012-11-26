@@ -19,7 +19,7 @@ $ ->
 		$("#food_list").hide()	
 
 	
-	$("#bar_graph_2").hide()
+	$("#bar_graph_1").hide()
 	$("#bar_graph_3").hide()
 	$("#show_1").click(bar_graph_1)	
 	$("#show_2").click(bar_graph_2)	
