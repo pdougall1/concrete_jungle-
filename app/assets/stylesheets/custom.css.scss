@@ -1,7 +1,7 @@
 @import "bootstrap";
 
 body {
-  padding-top: 60px;
+  padding-top: 10px;
 }
 
 
@@ -110,86 +110,18 @@ p {
   margin-bottom: 10px;
 }
 
-
-#Apples {
-  color: #1f77b4;
+.no_highliting {
+    ::selection
+{
+color:#ff0000;
+}
+::-moz-selection
+{
+color:#ff0000;
+} 
 }
 
-#Mulberries {
-  color: #aec7e8;
-}
 
-#Pears {
-  color: #ff7f0e;
-}
-
-#Oyster_Mushrooms {
-  color: #ffbb78;
-}  
-
-#Turnips  {
-  color: #2ca02c;
-}
-
-#figs {
-  color: #98df8a;
-}
-
-#plums {
-  color: #d62728;
-}
-
-#Daikon {
-  color: #ff9896;
-}
-
-#Serviceberries {
-  color: #9467bd;
-}
-
-#Kale {
-  color: #c5b0d5;
-}
-
-#Blackberries {
-  color: #8c564b;
-}
-
-#Cabbage {
-  color: #c49c94;
-}
-
-#Kohlrabi {
-  color: #e377c2;
-}
-
-#Carrots {
-  color: #f7b6d2;
-}
-
-#Zucchini {
-  color: #7f7f7f;
-}
-
-#Onions {
-  color: #c7c7c7;
-}
-
-#Daikon {
-  color: #bcbd22;
-}
-
-#Sweet_Potatoes {
-  color: #dbdb8d;
-}
-
-#Eggplant {
-  color: #17becf;
-}
-
-#Muscadines {
-  color: #9edae5;
-}
 
 
 body {
@@ -257,15 +189,16 @@ line {
 
 
 
-    .ball { 
-      fill:steelblue;
-    }
 
-    .wire {
-      stroke:black;
-      stroke-widh:1;
-      fill:none
-    }
+.ball { 
+  fill:steelblue;
+}
+
+.wire {
+  stroke:black;
+  stroke-widh:1;
+  fill:none
+}
 
 
 

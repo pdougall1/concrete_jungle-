@@ -13,6 +13,8 @@ class DonationsController < ApplicationController
 	def index
 		@donation = Donation.new
 		@donations = Donation.all
+		@destinations = []
+		Donation.all.each { |d| @destinations << d.destination }
 		@food_types = []
 		Donation.all.each { |f| @food_types << f.food_type }		
     respond_to do |format|
@@ -27,5 +29,9 @@ class DonationsController < ApplicationController
 
 	def home
 		@donations = Donation.all
+		@food_types = []
+		Donation.all.each { |f| @food_types << f.food_type }
+		@destinations = []
+		Donation.all.each { |d| @destinations << d.destination }
 	end
 end

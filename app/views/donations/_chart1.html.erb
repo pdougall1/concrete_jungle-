@@ -1,7 +1,7 @@
 
 <!-- <div id='chart-box'>bar graph 1</div> -->
 
-<div id="chart1">Chart 1</div>
+<div id="chart1"></div>
 
 <script type="text/javascript">
 d3.json("donations.json", function (json) {
@@ -25,7 +25,7 @@ var approximate_number_of_months = ((largest_time_in_days - smallest_time_in_day
 //set a padding variable to show all of the circles on the sides of box with the #s on axis
 var foodlistPadding = 120
 var xAxisPadding = foodlistPadding + 40 // meaning padding for y axis along the x axis
-var yAxisPadding = 40 //padding for x axis along the y axis
+var yAxisPadding = 60 //padding for x axis along the y axis
 var xCirclePadding = largest_radius + xAxisPadding + 5
 var yCirclePadding = (largest_radius)
   
@@ -63,22 +63,22 @@ var circle_color = d3.scale.ordinal()
     circle.style("opacity", 1e-6)
       .transition()
         .duration(1000)
-        .style("opacity", 0.9);   
+        .style("opacity", 0.75);   
 
     circle.on("mouseover", function() {
       svg.selectAll('circle').transition()
-      .style("opacity", 0.2)   
+      .style("opacity", 0.25)   
       .delay(0)
       .duration(500)
       d3.select(this).transition()
         .style("opacity", 1)   
-        .delay(250)
-        .duration(500)
+        .delay(125)
+        .duration(250)
     });  
 
     circle.on("mouseout", function() {
       svg.selectAll('circle').transition()
-      .style("opacity", 0.9)   
+      .style("opacity", 0.75)   
       .delay(0)
       .duration(250)
     });

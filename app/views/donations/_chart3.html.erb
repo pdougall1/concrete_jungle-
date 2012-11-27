@@ -16,8 +16,8 @@ var svg = d3.select("div#chart3").append("svg:svg")
 
 
 // scales the radius of each circle 
-var largest_radius = 75  //------------------------------------------set radius max
-    smallest_radius = 3  //------------------------------------------set radius min
+var largest_radius = 75
+    smallest_radius = 3
     largest_amount = d3.max(json, function(d) { return d.amount; })
 
 var radius = d3.scale.linear()

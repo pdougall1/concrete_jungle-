@@ -1,4 +1,4 @@
-<div id="chart2">Chart 2</div>
+<div class="no_highliting" id="chart2"></div>
 
     <script type="text/javascript">
 
@@ -6,14 +6,15 @@ d3.json("donations.json", function (json) {
 
   var w = 1000,
       h = 500,
-      fill = d3.scale.category10();
+      // trying to separate to foci according to the array passed in.
+      foci = <%= make_points_array(list_of_destinations(@destinations)).to_json.html_safe %>;    
 
   var vis = d3.select("div#chart2").append("svg:svg")
       .attr("width", w)
       .attr("height", h);
 
   // scales the radius of each circle 
-  var largest_radius = 30  
+  var largest_radius = 75
       smallest_radius = 3
       largest_amount = d3.max(json, function(d) { return d.amount; })
 
@@ -22,7 +23,7 @@ d3.json("donations.json", function (json) {
     .range([smallest_radius, largest_radius]);
 
   // scales the charge of each circle 
-  var largest_charge = 150  
+  var largest_charge = 500  
       smallest_charge = 7 
       largest_amount = d3.max(json, function(d) { return d.amount; })
 
@@ -57,17 +58,22 @@ var circle_color = d3.scale.ordinal()
   var force = d3.layout.force()
       .nodes(json)
       .gravity(0.1)
+      .friction(0.95)
       .charge(function(d) { return charge_radius_scale(d.amount) * -1; })
       .size([w, h]);
 
-  var force = d3.layout.force()
-      .nodes(json)
-      .gravity(0.1)
-      .charge(function(d) { return charge_radius_scale(d.amount) * -1; })
-      .size([w, h]);      
+
+  // trying to separate to foci according to the array passed in.
+  // Push nodes toward their designated focus.
+  // var k = .1 * e.alpha;
+  // json.forEach(function(o, i) {
+  //   o.y += (foci[o.id].y - o.y) * k;
+  //   o.x += (foci[o.id].x - o.x) * k;
+  // });
+
 
 function update(e) {
-    var k = 6 * e.alpha;
+    var k = 8 * e.alpha;
     json.forEach(function(o, i) {
       o.y += i & 1 ? k : -k;
       o.x += i & 2 ? k : -k;
